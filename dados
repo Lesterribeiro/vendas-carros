@@ -1,0 +1,74 @@
+[
+  {
+    "Modelo": "GM",
+    "Ano": 2026,
+    "Quantidade": 167,
+    "Preco": 134000.00,
+    "Faturamento_Global": 22378000.00,
+    "Estado": "São Paulo",
+    "Cidade": "Campinas"
+  },
+  {
+    "Modelo": "VW",
+    "Ano": 2019,
+    "Quantidade": 235,
+    "Preco": 101000.00,
+    "Faturamento_Global": 23735000.00,
+    "Estado": "Rio de Janeiro",
+    "Cidade": "Volta Redonda"
+  },
+  {
+    "Modelo": "CAOA",
+    "Ano": 2013,
+    "Quantidade": 203,
+    "Preco": 87000.00,
+    "Faturamento_Global": 17661000.00,
+    "Estado": "Piauí",
+    "Cidade": "Esperantina"
+  },
+  {
+    "Modelo": "BMW",
+    "Ano": 2015,
+    "Quantidade": 28,
+    "Preco": 98000.00,
+    "Faturamento_Global": 2744000.00,
+    "Estado": "Goiás",
+    "Cidade": "Rio Verde"
+  },
+  {
+    "Modelo": "FERRARI",
+    "Ano": 2025,
+    "Quantidade": 128,
+    "Preco": 1500000.00,
+    "Faturamento_Global": 192000000.00,
+    "Estado": "Rio Grande do Sul",
+    "Cidade": "Pampas"
+  },
+  {
+    "Modelo": "FIAT",
+    "Ano": 2001,
+    "Quantidade": 505,
+    "Preco": 35000.00,
+    "Faturamento_Global": 17675000.00,
+    "Estado": "Goiás",
+    "Cidade": "Formosa"
+  },
+  {
+    "Modelo": "Porsche",
+    "Ano": 2026,
+    "Quantidade": 12,
+    "Preco": 890000.00,
+    "Faturamento_Global": 10680000.00,
+    "Estado": "São Paulo",
+    "Cidade": "São Paulo"
+  },
+  {
+    "Modelo": "Porsche",
+    "Ano": 2025,
+    "Quantidade": 8,
+    "Preco": 850000.00,
+    "Faturamento_Global": 6800000.00,
+    "Estado": "Rio de Janeiro",
+    "Cidade": "Rio de Janeiro"
+  }
+]
