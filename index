@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porsche Dashboard Performance</title>
+    <!-- Chart.js para renderização de gráficos profissionais -->
+    <script src="https://jsdelivr.net"></script>
+    <style>
+        :root {
+            --bg-principal: #141416;
+            --bg-cards: #1e1e22;
+            --porsche-vermelho: #d5001c;
+            --texto-principal: #ffffff;
+            --texto-secundario: #a1a1a6;
+            --bordas: #2c2c32;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-principal);
+            padding: 20px;
+        }
+
+        header {
+            border-bottom: 2px solid var(--porsche-vermelho);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 24px;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        header span {
+            color: var(--porsche-vermelho);
+            font-weight: bold;
+        }
+
+        /* Seção de Filtros */
+        .filtros-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            background-color: var(--bg-cards);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--bordas);
+        }
+
+        .filtro-grupo {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex: 1;
+        }
+
+        .filtro-grupo label {
+            font-size: 12px;
+            color: var(--texto-secundario);
+            text-transform: uppercase;
+        }
+
+        .filtro-grupo select {
+            background-color: var(--bg-principal);
+            color: var(--texto-principal);
+            border: 1px solid var(--bordas);
+            padding: 10px;
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filtro-grupo select:focus {
+            border-color: var(--porsche-vermelho);
+        }
+
+        /* Painel de KPIs */
+        .kpis-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card-kpi {
+            background-color: var(--bg-cards);
+            border-left: 4px solid var(--porsche-vermelho);
+            padding: 20px;
+            border-radius: 6px;
+            flex: 1;
+            border-top: 1px solid var(--bordas);
+            border-right: 1px solid var(--bordas);
+            border-bottom: 1px solid var(--bordas);
+        }
+
+        .card-kpi h3 {
+            font-size: 14px;
+            color: var(--texto-secundario);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .card-kpi p {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* Seção de Gráficos */
+        .graficos-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card-grafico {
+            background-color: var(--bg-cards);
+            border: 1px solid var(--bordas);
+            padding: 20px;
+            border-radius: 8px;
+            height: 350px;
+        }
+
+        .card-grafico h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: var(--texto-principal);
+        }
+
+        /* Tabela */
+        .tabela-container {
+            background-color: var(--bg-cards);
+            border: 1px solid var(--bordas);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .tabela-container h3 {
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--bg-principal);
+            color: var(--texto-secundario);
+            padding: 12px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--bordas);
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>PORSCHE <span>BI PERFORMANCE</span></h1>
+        <div>Dashboard de Vendas Corporativas</div>
+    </header>
+
+    <div class="filtros-container">
+        <div class="filtro-grupo">
+            <label for="filtroModelo">Modelo/Marca</label>
+            <select id="filtroModelo" onchange="filtrarDados()">
+                <option value="TODOS">Todos os Modelos</option>
+            </select>
+        </div>
+        <div class="filtro-grupo">
+            <label for="filtroEstado">Estado</label>
+            <select id="filtroEstado" onchange="filtrarDados()">
+                <option value="TODOS">Todos os Estados</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="kpis-container">
+        <div class="card-kpi">
+            <h3>Receita Total Bruta</h3>
+            <p id="kpiReceita">R$ 0,00</p>
+        </div>
+        <div class="card-kpi">
+            <h3>Volume de Vendas (Unidades)</h3>
+            <p id="kpiVolume">0</p>
+        </div>
+    </div>
+
+    <div class="graficos-container">
+        <div class="card-grafico">
+            <h3>Faturamento Total por Modelo</h3>
+            <canvas id="graficoBarras"></canvas>
+        </div>
+        <div class="card-grafico">
+            <h3>Evolução de Quantidades por Ano</h3>
+            <canvas id="graficoLinhas"></canvas>
+        </div>
+    </div>
+
+    <div class="tabela-container">
+        <h3>Registros Consolidados</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Modelo</th>
+                    <th>Ano</th>
+                    <th>Qtd</th>
+                    <th>Preço Un.</th>
+                    <th>Faturamento Global</th>
+                    <th>Estado</th>
+                    <th>Cidade</th>
+                </tr>
+            </thead>
+            <tbody id="corpoTabela">
+                <!-- Inserido dinamicamente via JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Dados brutos unificados da imagem + Porsche fornecidos pelo usuário
+        const dadosVendas = [
+            {"Modelo": "GM", "Ano": 2026, "Quantidade": 167, "Preco": 134000.00, "Faturamento_Global": 22378000.00, "Estado": "São Paulo", "Cidade": "Campinas"},
+            {"Modelo": "VW", "Ano": 2019, "Quantidade": 235, "Preco": 101000.00, "Faturamento_Global": 23735000.00, "Estado": "Rio de Janeiro", "Cidade": "Volta Redonda"},
+            {"Modelo": "CAOA", "Ano": 2013, "Quantidade": 203, "Preco": 87000.00, "Faturamento_Global": 17661000.00, "Estado": "Piauí", "Cidade": "Esperantina"},
+            {"Modelo": "BMW", "Ano": 2015, "Quantidade": 28, "Preco": 98000.00, "Faturamento_Global": 2744000.00, "Estado": "Goiás", "Cidade": "Rio Verde"},
+            {"Modelo": "FERRARI", "Ano": 2025, "Quantidade": 128, "Preco": 1500000.00, "Faturamento_Global": 192000000.00, "Estado": "Rio Grande do Sul", "Cidade": "Pampas"},
+            {"Modelo": "FIAT", "Ano": 2001, "Quantidade": 505, "Preco": 35000.00, "Faturamento_Global": 17675000.00, "Estado": "Goiás", "Cidade": "Formosa"},
+            {"Modelo": "Porsche", "Ano": 2026, "Quantidade": 12, "Preco": 890000.00, "Faturamento_Global": 10680000.00, "Estado": "São Paulo", "Cidade": "São Paulo"},
+            {"Modelo": "Porsche", "Ano": 2025, "Quantidade": 8, "Preco": 850000.00, "Faturamento_Global": 6800000.00, "Estado": "Rio de Janeiro", "Cidade": "Rio de Janeiro"}
+        ];
+
+        let graficoBarrasInstance = null;
+        let graficoLinhasInstance = null;
+
+        // Inicializar aplicação
+        window.onload = function() {
+            carregarOpcoesFiltros();
+            filtrarDados();
+        };
+
+        function carregarOpcoesFiltros() {
+            const modelos = [...new Set(dadosVendas.map(item => item.Modelo))].sort();
+            const estados = [...new Set(dadosVendas.map(item => item.Estado))].sort();
+
+            const selectModelo = document.getElementById("filtroModelo");
+            modelos.forEach(mod => {
+                let opt = document.createElement("option");
+                opt.value = mod;
+                opt.innerText = mod;
+                selectModelo.appendChild(opt);
+            });
+
+            const selectEstado = document.getElementById("filtroEstado");
+            estados.forEach(est => {
+                let opt = document.createElement("option");
+                opt.value = est;
+                opt.innerText = est;
+                selectEstado.appendChild(opt);
+            });
+        }
+
+        function formatarMoeda(valor) {
+            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function filtrarDados() {
+            const valModelo = document.getElementById("filtroModelo").value;
+            const valEstado = document.getElementById("filtroEstado").value;
+
+            // Aplicação da lógica de filtros combinados
+            const dadosFiltrados = dadosVendas.filter(item => {
+                const matchModelo = (valModelo === "TODOS" || item.Modelo === valModelo);
+                const matchEstado = (valEstado === "TODOS" || item.Estado === valEstado);
+                return matchModelo && matchEstado;
+            });
+
+            atualizarDashboard(dadosFiltrados);
+        }
+
+        function atualizarDashboard(dados) {
+            // 1. Atualizar KPIs
